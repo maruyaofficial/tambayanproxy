@@ -25,8 +25,7 @@ const defaultChannelList = [
   },
   {
     name: "Cinema One",
-    manifest: 'https://tambayan-proxy.vercel.app/api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-cinemaone-dash-abscbnono/index.mpd
-',
+    manifest: 'https://proxy.tambayan-chat.site/abs-cbn-cinemaone-dash-abscbnono.mpd',
     drm: null,
     format: "dash"
   },
