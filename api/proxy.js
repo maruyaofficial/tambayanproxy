@@ -1,49 +1,82 @@
+import { Readable } from 'stream';
+
+const ALLOWED_HOSTS = [
+  'akamaized.net',
+  'amagi.tv',
+  'skygo.mn',
+  'nocable.cc'
+];
+
 export default async function handler(req, res) {
-  const { url } = req.query;
-  if (!url) return res.status(400).json({ error: "Missing 'url' parameter" });
+  // Handle CORS preflight
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    return res.status(200).end();
+  }
+
+  const targetUrl = req.query.url;
+  if (!targetUrl || !/^https?:\/\//.test(targetUrl)) {
+    return res.status(400).json({ error: 'Missing or invalid ?url=' });
+  }
+
+  const parsedHost = new URL(targetUrl).hostname;
+  const allowed = ALLOWED_HOSTS.some(allowedHost =>
+    parsedHost === allowedHost || parsedHost.endsWith(`.${allowedHost}`)
+  );
+
+  if (!allowed) {
+    return res.status(403).json({ error: 'Domain not allowed' });
+  }
 
   try {
-    const decodedUrl = decodeURIComponent(url);
-    const parsed = new URL(decodedUrl);
+    const upstreamResponse = await fetch(targetUrl, {
+      method: req.method || 'GET',
+      headers: {
+        'User-Agent': req.headers['user-agent'] || 'Mozilla/5.0',
+        'Referer': req.headers['referer'] || '',
+        'Range': req.headers['range'] || '',
+        'Origin': req.headers['origin'] || '',
+        'Accept': '*/*',
+      },
+    });
 
-    // Allow only safe CDN domains
-    const allowedHosts = [
-      "akamaized.net",
-      "amagi.com",
-      "convrgelive.nathcreqtives.com",
-      "proxy.nathcreqtives.com",
-      "linear.channel.amagi.tv"
-    ];
+    res.status(upstreamResponse.status);
 
-    const valid = allowedHosts.some(domain => parsed.hostname.includes(domain));
-    if (!valid) {
-      return res.status(403).json({ error: "Access denied to this host." });
-    }
+    upstreamResponse.headers.forEach((value, key) => {
+      res.setHeader(key, value);
+    });
 
-    const headers = {
-      "User-Agent": req.headers["user-agent"] || "TambayanProxy/1.0",
-    };
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
 
-    const response = await fetch(decodedUrl, { headers });
+    const reader = upstreamResponse.body.getReader();
+    const stream = new ReadableStream({
+      async pull(controller) {
+        const { done, value } = await reader.read();
+        if (done) controller.close();
+        else controller.enqueue(value);
+      }
+    });
 
-    if (!response.ok) {
-      return res.status(response.status).send("Upstream error");
-    }
+    const nodeStream = streamToNodeReadable(stream);
+    nodeStream.pipe(res);
 
-    // Fallback detection
-    const contentType = response.headers.get("content-type") || "application/octet-stream";
-    if (contentType.includes("application/vnd.apple.mpegurl")) {
-      res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
-    } else if (contentType.includes("video/mp4")) {
-      res.setHeader("Content-Type", "video/mp4");
-    } else {
-      res.setHeader("Content-Type", contentType);
-    }
-
-    res.setHeader("Access-Control-Allow-Origin", "*");
-
-    response.body.pipe(res);
   } catch (err) {
-    res.status(500).json({ error: "Proxy failed", details: err.message });
+    console.error('Proxy error:', err);
+    res.status(500).json({ error: 'Proxy failed', details: err.message });
   }
+}
+
+// Converts Web ReadableStream to Node.js Readable
+function streamToNodeReadable(stream) {
+  const reader = stream.getReader();
+  return new Readable({
+    async read() {
+      const { done, value } = await reader.read();
+      if (done) this.push(null);
+      else this.push(value);
+    }
+  });
 }
