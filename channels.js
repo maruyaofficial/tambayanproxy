@@ -9,7 +9,7 @@ function generateChannelId(name) {
 const defaultChannelList = [
   {
     name: "ANIMAX",
-    manifest: 'https://proxy.tambayan-chat.site/api/proxy?url=https://tglmp01.akamaized.net/out/v1/de55fad9216e4fe7ad8d2eed456ba1ec/manifest.mpd',
+    manifest: 'https://tambayan-proxy.vercel.app/api/proxy?url=https://tglmp01.akamaized.net/out/v1/de55fad9216e4fe7ad8d2eed456ba1ec/manifest.mpd',
     drm: {
       type: 'clearkey',
       keyId: '92032b0e41a543fb9830751273b8debd',
@@ -19,19 +19,19 @@ const defaultChannelList = [
   },
   {
     name: "CINEMO",
-    manifest: 'https://officialmaruya.vercel.app/api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-cinemo-dash-abscbnono/f1da36ea-047e-4262-9e45-9326d0e2930b/index.mpd',
+    manifest: 'https://tambayan-proxy.vercel.appapi/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-cinemo-dash-abscbnono/f1da36ea-047e-4262-9e45-9326d0e2930b/index.mpd',
     drm: null,
     format: "dash"
   },
   {
     name: "Cinema One",
-    manifest: 'https://officialmaruya.vercel.app/api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-cinemaone-dash-abscbnono/index.mpd',
+    manifest: 'https://tambayan-proxy.vercel.appapi/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-cinemaone-dash-abscbnono/index.mpd',
     drm: null,
     format: "dash"
   },
   {
     name: "Kapamilya HD",
-    manifest: 'https://officialmaruya.vercel.app/api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd',
+    manifest: 'https://tambayan-proxy.vercel.appapi/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd',
     drm: null,
     format: "dash"
   },
@@ -49,31 +49,31 @@ const defaultChannelList = [
   },
   {
     name: "ANC",
-    manifest: 'https://officialmaruya.vercel.app/api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-anc-global-dash-abscbnono/index.mpd',
+    manifest: 'https://tambayan-proxy.vercel.appapi/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-anc-global-dash-abscbnono/index.mpd',
     drm: null,
     format: "dash"
   },
   {
     name: "GMA Pinoy TV",
-    manifest: 'https://officialmaruya.vercel.app/api/proxy?url=https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-abscbn-gma-x7-dash-abscbnono/index.mpd',
+    manifest: 'https://tambayan-proxy.vercel.appapi/proxy?url=https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-abscbn-gma-x7-dash-abscbnono/index.mpd',
     drm: null,
     format: "dash"
   },
   {
     name: "Myx",
-    manifest: 'https://officialmaruya.vercel.app/api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-myxnola-dash-abscbnono/index.mpd',
+    manifest: 'https://tambayan-proxy.vercel.appapi/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-myxnola-dash-abscbnono/index.mpd',
     drm: null,
     format: "dash"
   },
   {
     name: "Teleradyo Serbisyo",
-    manifest: 'https://officialmaruya.vercel.app/api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-teleradyo-dash-abscbnono/index.mpd',
+    manifest: 'https://tambayan-proxy.vercel.appapi/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-teleradyo-dash-abscbnono/index.mpd',
     drm: null,
     format: "dash"
   },
   {
     name: "TFC",
-    manifest: 'https://officialmaruya.vercel.app/api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-tfcasia-dash-abscbnono/index.mpd',
+    manifest: 'https://tambayan-proxy.vercel.appapi/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-tfcasia-dash-abscbnono/index.mpd',
     drm: null,
     format: "dash"
   },
