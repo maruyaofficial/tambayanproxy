@@ -1,34 +1,17 @@
+// File: /api/license/clearkey.js
 export default function handler(req, res) {
-  const { channel } = req.query;
-
   const keys = {
-    animax: {
-      kid: process.env.ANIMAX_KEY_ID,
-      k: process.env.ANIMAX_KEY
-    },
-    cartoon: {
-      kid: process.env.CN_KEY_ID,
-      k: process.env.CN_KEY
-    }
-    // Add more channels here if needed
-  };
-
-  const entry = keys[channel];
-  if (!entry) {
-    return res.status(404).json({ error: 'Unknown channel' });
-  }
-
-  const response = {
     keys: [
       {
         kty: "oct",
-        kid: entry.kid,
-        k: entry.k
+        alg: "A128KW",
+        kid: "92032b0e41a543fb9830751273b8debd",
+        k: "03f8b65e2af785b10d6634735dbe6c11"
       }
-    ]
+    ],
+    type: "temporary"
   };
 
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Content-Type', 'application/json');
-  res.status(200).json(response);
+  res.setHeader("Content-Type", "application/json");
+  res.status(200).json(keys);
 }
