@@ -110,9 +110,7 @@ const defaultChannelList = [
   }
 
   // Ensure ID
-  if (!channel.id) {
-    channel.id = generateChannelId(channel.name);
-  }
+
 
   // Fix malformed PLDT URLs
   if (channel.manifest?.includes('qp-pldt-live-grp')) {
