@@ -10,7 +10,7 @@ configureDRM() {
         },
         // Optional: license server (not needed for inlined keys)
         // servers: {
-        //   'org.w3.clearkey': 'https://yourserver/api/license/clearkey'
+        //   'org.w3.clearkey': 'https://tambayan-proxy.vercel.app/api/license/clearkey'
         // }
       }
     });
