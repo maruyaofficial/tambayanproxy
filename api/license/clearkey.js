@@ -1,17 +1,42 @@
-// File: /api/license/clearkey.js
-export default function handler(req, res) {
-  const keys = {
-    keys: [
-      {
-        kty: "oct",
-        alg: "A128KW",
-        kid: "92032b0e41a543fb9830751273b8debd",
-        k: "03f8b65e2af785b10d6634735dbe6c11"
-      }
-    ],
-    type: "temporary"
-  };
+configureDRM() {
+  const drm = this.currentChannel.drm;
+  const type = drm?.type;
 
-  res.setHeader("Content-Type", "application/json");
-  res.status(200).json(keys);
+  if (type === 'clearkey') {
+    this.player.configure({
+      drm: {
+        clearKeys: {
+          [drm.keyId]: drm.key
+        },
+        // Optional: license server (not needed for inlined keys)
+        // servers: {
+        //   'org.w3.clearkey': 'https://yourserver/api/license/clearkey'
+        // }
+      }
+    });
+    this.lastDrmType = 'clearkey';
+  }
+
+  else if (type === 'widevine') {
+    this.player.configure({
+      drm: {
+        servers: {
+          'com.widevine.alpha': 'https://convrgkey.nathcreqtives.com/widevine/?deviceId=02:00:00:00:00:00'
+        }
+      }
+    });
+    this.lastDrmType = 'widevine';
+  }
+
+  else {
+    // Clear any previous DRM config
+    this.player.configure({
+      drm: {
+        servers: {},
+        clearKeys: {},
+        advanced: {}
+      }
+    });
+    this.lastDrmType = 'none';
+  }
 }
