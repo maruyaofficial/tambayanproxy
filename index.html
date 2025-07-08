@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Channel Player - EME Protected Streams</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <!-- Sidebar Channel List -->
+            <div class="sidebar" id="channelSidebar">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-white mb-0">
+                            <i class="bi bi-broadcast"></i> Channels
+                        </h4>
+                        <button class="btn btn-outline-light btn-sm sidebar-close d-md-none" id="sidebarClose">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <div class="search-container mb-3">
+                        <input type="text" class="form-control" id="channelSearch" placeholder="Search channels...">
+                    </div>
+                </div>
+                
+                <div class="channels-list" id="channelsList">
+                    <!-- Channels will be populated here -->
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Video Player Container -->
+                <div class="video-container">
+                    <video 
+                        id="videoPlayer" 
+                        class="video-player"
+                        controls
+                        muted
+                        preload="metadata"
+                        poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNoYW5uZWwgUGxheWVyPC90ZXh0Pjwvc3ZnPg==">
+                        <p class="text-center text-muted mt-4">
+                            Your browser doesn't support HTML5 video or EME (Encrypted Media Extensions).
+                        </p>
+                    </video>
+                    
+                    <!-- Fullscreen Button -->
+                    <button class="btn fullscreen-btn" id="fullscreenBtn">
+                        <i class="bi bi-fullscreen"></i>
+                    </button>
+                    
+                    <!-- Quality Selection Button -->
+                    <div class="quality-selector" id="qualitySelector">
+                        <button class="btn quality-btn" id="qualityBtn">
+                            <i class="bi bi-gear"></i>
+                            <span id="currentQuality">Auto</span>
+                        </button>
+                        <div class="quality-dropdown" id="qualityDropdown">
+                            <div class="quality-item active" data-quality="auto">
+                                <span>Auto</span>
+                                <small>Adaptive</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Channel Info Toggle Button -->
+                    <button class="btn info-toggle-btn" id="infoToggleBtn" title="Toggle Channel Information">
+                        <i class="bi bi-exclamation-circle"></i>
+                    </button>
+                    
+                    <!-- Channel Name Popup -->
+                    <div class="channel-name-popup" id="channelNamePopup">
+                        <h5 id="currentChannelName">Select a Channel</h5>
+                        <p id="currentChannelInfo">Use arrow keys to navigate</p>
+                    </div>
+                    
+                    <!-- Channel Number Display -->
+                    <div class="channel-number-display" id="channelNumberDisplay">
+                        
+                    </div>
+                    
+                    <!-- Menu Toggle Button -->
+                    <button class="btn menu-toggle-btn" id="menuToggleBtn">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    
+                    <!-- Unmute Overlay -->
+                    <div class="unmute-overlay" id="unmuteOverlay">
+                        <div class="unmute-content">
+                            <i class="bi bi-volume-mute"></i>
+                            <span>Click anywhere to unmute</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading Spinner -->
+                    <div class="loading-spinner" id="loadingSpinner">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading channel...</p>
+                    </div>
+                </div>
+
+                <!-- Channel Info Panel -->
+                <div class="channel-info-panel hidden" id="channelInfoPanel">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6>Channel Information</h6>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <strong>DRM Type:</strong>
+                                    <span id="drmType">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Manifest URL:</strong>
+                                    <span id="manifestUrl" class="text-break">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Status:</strong>
+                                    <span id="playbackStatus" class="badge bg-secondary">Ready</span>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Health Check:</strong>
+                                    <button class="btn btn-outline-primary btn-sm" id="healthCheckBtn">
+                                        <i class="bi bi-arrow-clockwise"></i> Check All Channels
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Keyboard Shortcuts</h6>
+                            <div class="shortcuts">
+                                <div><kbd>↑↓</kbd> Navigate channels</div>
+                                <div><kbd>0-9</kbd> Go to channel number</div>
+                                <div><kbd>Enter</kbd> Play channel</div>
+                                <div><kbd>Space</kbd> Play/Pause</div>
+                                <div><kbd>F</kbd> Fullscreen</div>
+                                <div><kbd>M</kbd> Mute/Unmute</div>
+                                <div><kbd>Q</kbd> Quality settings</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Notification -->
+    <div class="error-notification" id="errorNotification">
+        <div class="error-content">
+            <i class="bi bi-exclamation-triangle"></i>
+            <div class="error-text">
+                <h6 id="errorTitle">Playback Error</h6>
+                <p id="errorText">Unable to load this channel. Please try another channel.</p>
+            </div>
+            <button class="btn btn-sm btn-light" onclick="if (!window.__cfRLUnblockHandlers) return false; closeErrorNotification()" data-cf-modified-a6e2f5b17a472799cdfb3b2f-="">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="./npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <!-- Shaka Player for DASH support -->
+    <script src="npm/shaka-player@4.15.5/dist/shaka-player.compiled.min.js" type="text/javascript"></script>
+    <!-- HLS.js for better HLS support -->
+<script src="npm/hls.js@1.6.6/dist/hls.min.js"></script>
+    <!-- Channels Data -->
+  <script type="module" src="channels.js"></script>
+    <!-- Main Application Script -->
+    <script src="app.js" type="text/javascript"></script>
+</body>
+
+
+</html> 
