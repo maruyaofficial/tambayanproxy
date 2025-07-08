@@ -272,10 +272,7 @@ class ChannelPlayer {
         
         return hlsSupported;
     }
-    function hexToBase64(hex) {
-  const bytes = Uint8Array.from(hex.match(/.{1,2}/g).map(b => parseInt(b, 16)));
-  return btoa(String.fromCharCode(...bytes));
-}
+   
 
 // Main DRM config logic
 async configureDRM() {
