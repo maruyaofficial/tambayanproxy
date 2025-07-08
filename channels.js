@@ -1,10 +1,4 @@
-const CONVRG_MANIFEST_BASE = 'https://proxy.tambayan-chat.site/001/2/';
-const CONVRG_MANIFEST_SUFFIX = '/manifest.mpd?virtualDomain=001.live_hls.zte.com&IASHttpSessionId=OTT';
-const CONVRG_LICENSE_URI = 'https://convrgkey.nathcreqtives.com/widevine/?deviceId=02:00:00:00:00:00';
 
-function generateChannelId(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '').substring(0, 20) || `ch${Date.now().toString(36)}`;
-}
 
 const defaultChannelList = [
   {
@@ -127,8 +121,8 @@ const defaultChannelList = [
       const match = url.hostname.match(/grp-\d+/);
       if (match) {
         const groupName = match[0];
-        const manifestName = url.pathname.split('/').pop();
-        channel.manifest = `https://proxy.tambayan-chat.site/api/akamai/${groupName}/${manifestName}`;
+        const filename = url.pathname.split('/').pop();
+        channel.manifest = `https://proxy.tambayan-chat.site/api/akamai/${groupName}/${filename}`;
       }
     } catch (e) {
       console.warn("Failed to parse PLDT manifest:", channel.manifest, e);
@@ -142,5 +136,3 @@ const defaultChannelList = [
 
   return channel;
 });
-
-export { defaultChannelList, generateChannelId };
