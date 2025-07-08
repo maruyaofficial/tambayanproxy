@@ -272,7 +272,66 @@ class ChannelPlayer {
         
         return hlsSupported;
     }
-    
+    function hexToBase64(hex) {
+  const bytes = Uint8Array.from(hex.match(/.{1,2}/g).map(b => parseInt(b, 16)));
+  return btoa(String.fromCharCode(...bytes));
+}
+
+// Main DRM config logic
+async configureDRM() {
+  const drm = this.currentChannel.drm;
+  const type = drm?.type;
+
+  if (type === 'clearkey') {
+    try {
+      const response = await fetch(`https://tambayanproxy.vercel.app/api/license/clearkey?channel=${this.currentChannel.id}`);
+      if (!response.ok) throw new Error('Failed to fetch ClearKey license');
+
+      const data = await response.json();
+
+      const clearKeys = {};
+      for (const key of data.keys) {
+        clearKeys[key.kid] = key.k;
+      }
+
+      this.player.configure({
+        drm: {
+          clearKeys
+        }
+      });
+
+      this.lastDrmType = 'clearkey';
+    } catch (err) {
+      console.error("Failed to fetch or apply clearkey license:", err);
+      this.notifyError("ClearKey DRM Error", err.message);
+    }
+  }
+
+  else if (type === 'widevine') {
+    this.player.configure({
+      drm: {
+        servers: {
+          'com.widevine.alpha': 'https://convrgkey.nathcreqtives.com/widevine/?deviceId=02:00:00:00:00:00'
+        }
+      }
+    });
+
+    this.lastDrmType = 'widevine';
+  }
+
+  else {
+    this.player.configure({
+      drm: {
+        servers: {},
+        clearKeys: {},
+        advanced: {}
+      }
+    });
+
+    this.lastDrmType = 'none';
+  }
+}
+
     generateHashtag(channelName) {
         // Remove special characters and spaces, convert to lowercase
         const cleanName = channelName
