@@ -9,7 +9,7 @@ function generateChannelId(name) {
 const defaultChannelList = [
   {
     name: "ANIMAX",
-    manifest: 'https://proxy.tambayan-chat.site/api/proxy?url=https://tglmp01.akamaized.net/out/v1/de55fad9216e4fe7ad8d2eed456ba1ec/manifest.mpd',
+    manifest: 'https://tambayan-proxy.vercel.app/api/proxy?url=https://tglmp01.akamaized.net/out/v1/de55fad9216e4fe7ad8d2eed456ba1ec/manifest.mpd',
     drm: {
       type: 'clearkey',
       keyId: '92032b0e41a543fb9830751273b8debd',
