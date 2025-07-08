@@ -825,35 +825,43 @@ class ChannelPlayer {
                     }
                 }
                 
-             configureDRM() {
-    const drmType = this.currentChannel.drm?.type;
-
-    if (drmType === 'clearkey') {
-        // Configure ClearKey license server
-        this.player.configure({
-            drm: {
-                servers: {
-                    'org.w3.clearkey': 'https://tambayanproxy.vercel.app/api/license/clearkey'
-                }
+                // Standard pause for same DRM type
+                await new Promise(resolve => setTimeout(resolve, 200));
             }
-        });
-        this.lastDrmType = 'clearkey';
-    }
-
-    else if (drmType === 'widevine') {
-        this.player.configure({
-            drm: {
-                servers: {
-                    'com.widevine.alpha': 'https://tambayanproxy.vercel.app/api/license/widevine'  // Adjust this if needed
-                }
+            
+            console.log(`Playing: ${this.currentChannel.name}`);
+            console.log(`Manifest: ${this.currentChannel.manifest}`);
+            console.log(`DRM: ${JSON.stringify(this.currentChannel.drm)}`);
+            
+            // Ensure video element is visible and force repaint
+            this.elements.video.style.display = 'block';
+            this.elements.video.style.visibility = 'visible';
+            this.elements.video.style.opacity = '1';
+            
+            // Force browser repaint to fix rendering issues
+            this.elements.video.offsetHeight;
+            
+            // Configure DRM if needed
+            if (this.currentChannel.drm && this.currentChannel.drm.type !== 'none') {
+                this.configureDRM();
+                // Additional pause after DRM configuration to let it settle
+                await new Promise(resolve => setTimeout(resolve, 100));
+            } else {
+                // Clear any existing DRM configuration
+                this.player.configure({
+                    drm: {
+                        servers: {},
+                        clearKeys: {},
+                        advanced: {}
+                    }
+                });
+                // Update last DRM type to none
+                this.lastDrmType = 'none';
             }
-        });
-        this.lastDrmType = 'widevine';
-    }
-
-    // You can add other DRM types here (e.g., PlayReady, FairPlay)
-}
-
+            
+            // Load the manifest
+            await this.player.load(this.currentChannel.manifest);
+            
             // Wait for initial buffer to build up (reduces perceived loading time)
             await new Promise(resolve => setTimeout(resolve, 500));
             
