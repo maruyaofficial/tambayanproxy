@@ -31,7 +31,7 @@ const defaultChannelList = [
   },
   {
     name: "Kapamilya HD",
-    manifest: 'https://officialmaruya.vercel.app/api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd',
+    manifest: 'https://tambayan-proxy.vercel.app//api/proxy?url=https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd',
     drm: null,
     format: "dash"
   },
