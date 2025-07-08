@@ -833,7 +833,7 @@ class ChannelPlayer {
         this.player.configure({
             drm: {
                 servers: {
-                    'org.w3.clearkey': 'https://proxy.tambayan-chat.site/api/license/clearkey'
+                    'org.w3.clearkey': 'https://tambayanproxy.vercel.app/api/license/clearkey'
                 }
             }
         });
@@ -844,7 +844,7 @@ class ChannelPlayer {
         this.player.configure({
             drm: {
                 servers: {
-                    'com.widevine.alpha': 'https://proxy.tambayan-chat.site/api/license/widevine'  // Adjust this if needed
+                    'com.widevine.alpha': 'https://tambayanproxy.vercel.app/api/license/widevine'  // Adjust this if needed
                 }
             }
         });
